@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8" />
-<title>Message secret</title>
+<title>Message secret avec délai</title>
 <style>
   body { font-family: Arial, sans-serif; max-width: 400px; margin: 2rem auto; }
   #chat { border: 1px solid #ccc; padding: 1rem; height: 200px; overflow-y: auto; margin-bottom: 1rem; }
@@ -48,18 +48,26 @@
     input.value = '';
 
     if(msg === secretCode) {
-      // Afficher "La personne écrit..."
-      const typingDiv = document.createElement('div');
-      typingDiv.id = "typing";
-      typingDiv.textContent = "La personne est en train d'écrire...";
-      chat.appendChild(typingDiv);
-      chat.scrollTop = chat.scrollHeight;
+      // délai aléatoire avant d’écrire (entre 1 et 3 secondes)
+      const delayBeforeTyping = Math.random() * 2000 + 1000; // 1000 à 3000 ms
 
-      // Après 3 secondes, enlever le typing et afficher la réponse
       setTimeout(() => {
-        typingDiv.remove();
-        addMessage("Organisation secrète : " + botReply, 'bot');
-      }, 3000);
+        // Afficher "La personne écrit..."
+        const typingDiv = document.createElement('div');
+        typingDiv.id = "typing";
+        typingDiv.textContent = "La personne est en train d'écrire...";
+        chat.appendChild(typingDiv);
+        chat.scrollTop = chat.scrollHeight;
+
+        // temps aléatoire d’écriture (10 à 15 secondes)
+        const typingDuration = Math.random() * 5000 + 10000; // 10000 à 15000 ms
+
+        setTimeout(() => {
+          typingDiv.remove();
+          addMessage("Organisation secrète : " + botReply, 'bot');
+        }, typingDuration);
+
+      }, delayBeforeTyping);
     }
   }
 </script>
