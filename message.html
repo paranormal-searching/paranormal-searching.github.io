@@ -10,6 +10,32 @@
   .user { color: blue; }
   .bot { color: green; }
   #typing { font-style: italic; color: gray; }
+
+  /* Style du pop-up */
+  #popup {
+    position: fixed;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #111;
+    color: white;
+    padding: 15px;
+    border-radius: 8px;
+    max-width: 350px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    display: none;
+    z-index: 999;
+    font-size: 14px;
+  }
+  #popup button {
+    background: crimson;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    margin-top: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
 </style>
 </head>
 <body>
@@ -21,10 +47,22 @@
 <input type="text" id="inputMessage" placeholder="Écris ton message..." autofocus />
 <button id="sendBtn">Envoyer</button>
 
+<!-- Pop-up -->
+<div id="popup">
+  Bravo ! Tu as découvert le secret derrière l'ordre carré, cependant, il reste encore des employés de nos jours, 
+  ils se cachent et essayent de faire renaître l'organisation. 
+  Ce sera à toi de les reconnaître ! Bonne chance pour la suite de ton aventure ! 
+  En tout cas, tu n'auras plus besoin de ce site web, alors au revoir !
+  <br>
+  <button id="closePopup">Fermer</button>
+</div>
+
 <script>
   const chat = document.getElementById('chat');
   const input = document.getElementById('inputMessage');
   const sendBtn = document.getElementById('sendBtn');
+  const popup = document.getElementById('popup');
+  const closePopup = document.getElementById('closePopup');
 
   const secretCode = "2002"; // code secret à détecter
   const botReply = "D'accord je vais vous expliquer ce que l'on sait. L'ordre carré a été créé par un laboratoire anonyme. Ils ont inventé le sujet AYW-001 renommé Aywen ensuite, après des années de recherche pour créer l'humain parfait puis ils l'ont cloné pour en faire plusieurs versions. Cependant, malgré l'apparence n'ayant pas été altérée, ils se sont rendus compte que des variations apparaissaient, c'est pourquoi nous n'avons pas à ce jour 4 Aywens mais bien 4 personnes distinctes, avec une apparence similaire.";
@@ -34,12 +72,16 @@
     div.classList.add('message', sender);
     div.textContent = text;
     chat.appendChild(div);
-    chat.scrollTop = chat.scrollHeight; // scroll en bas
+    chat.scrollTop = chat.scrollHeight;
   }
 
   sendBtn.addEventListener('click', sendMessage);
   input.addEventListener('keypress', (e) => {
     if(e.key === 'Enter') sendMessage();
+  });
+
+  closePopup.addEventListener('click', () => {
+    popup.style.display = 'none';
   });
 
   function sendMessage() {
@@ -49,7 +91,7 @@
     input.value = '';
 
     if(msg === secretCode) {
-      const delayBeforeTyping = Math.random() * 2000 + 1000; // 1000 à 3000 ms
+      const delayBeforeTyping = Math.random() * 2000 + 1000; // 1 à 3s
 
       setTimeout(() => {
         const typingDiv = document.createElement('div');
@@ -58,11 +100,17 @@
         chat.appendChild(typingDiv);
         chat.scrollTop = chat.scrollHeight;
 
-        const typingDuration = Math.random() * 5000 + 7000;
+        const typingDuration = Math.random() * 5000 + 10000; // 10 à 15s
 
         setTimeout(() => {
           typingDiv.remove();
           addMessage("[Paranormal Search] Joe : " + botReply, 'bot');
+
+          // Pop-up après 5s
+          setTimeout(() => {
+            popup.style.display = 'block';
+          }, 5000);
+
         }, typingDuration);
 
       }, delayBeforeTyping);
