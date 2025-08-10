@@ -48,23 +48,20 @@
     input.value = '';
 
     if(msg === secretCode) {
-      // délai aléatoire avant d’écrire (entre 1 et 3 secondes)
       const delayBeforeTyping = Math.random() * 2000 + 1000; // 1000 à 3000 ms
 
       setTimeout(() => {
-        // Afficher "La personne écrit..."
         const typingDiv = document.createElement('div');
         typingDiv.id = "typing";
         typingDiv.textContent = "La personne est en train d'écrire...";
         chat.appendChild(typingDiv);
         chat.scrollTop = chat.scrollHeight;
 
-        // temps aléatoire d’écriture (10 à 15 secondes)
-        const typingDuration = Math.random() * 5000 + 10000; // 10000 à 15000 ms
+        const typingDuration = Math.random() * 5000 + 7000;
 
         setTimeout(() => {
           typingDiv.remove();
-          addMessage("Organisation secrète : " + botReply, 'bot');
+          addMessage("[Paranormal Search] Joe : " + botReply, 'bot');
         }, typingDuration);
 
       }, delayBeforeTyping);
